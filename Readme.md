@@ -1,4 +1,4 @@
-# AutoML with Metaheuristic Optimization 🤖
+# AutoML with Metaheuristic Optimization
 
 ระบบ Automated Machine Learning ที่ใช้ Metaheuristic Algorithm ในการค้นหา Model, Hyperparameters และ Preprocessing ที่เหมาะสมโดยอัตโนมัติ
 
