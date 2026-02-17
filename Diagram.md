@@ -294,39 +294,46 @@ graph LR
 
 ```mermaid
 graph TB
-    subgraph Logistic Regression
-        LR[Logistic Regression] --> LR1[C: 0.001-100]
+    subgraph LR_Model["Logistic Regression"]
+        LR[Model] --> LR1[C: 0.001-100]
         LR --> LR2[penalty: l1, l2, elasticnet]
         LR --> LR3[solver: liblinear, saga]
     end
     
-    subgraph SVM
-        SVM[Support Vector Machine] --> SVM1[C: 0.1-100]
-        SVM --> SVM2[kernel: linear, rbf, poly]
-        SVM --> SVM3[gamma: scale, auto, 0.001-1]
+    subgraph SVM_Model["Support Vector Machine"]
+        SVMN[Model] --> SVM1[C: 0.1-100]
+        SVMN --> SVM2[kernel: linear, rbf, poly]
+        SVMN --> SVM3[gamma: scale, auto, 0.001-1]
     end
     
-    subgraph Random Forest
-        RF[Random Forest] --> RF1[n_estimators: 10-500]
+    subgraph RF_Model["Random Forest"]
+        RF[Model] --> RF1[n_estimators: 10-500]
         RF --> RF2[max_depth: 3-50]
         RF --> RF3[min_samples_split: 2-20]
         RF --> RF4[min_samples_leaf: 1-10]
     end
     
-    subgraph XGBoost
-        XGB[XGBoost] --> XGB1[learning_rate: 0.01-0.3]
+    subgraph XGB_Model["XGBoost"]
+        XGB[Model] --> XGB1[learning_rate: 0.01-0.3]
         XGB --> XGB2[n_estimators: 50-500]
         XGB --> XGB3[max_depth: 3-15]
         XGB --> XGB4[subsample: 0.5-1.0]
     end
     
-    subgraph Neural Network
-        NN[Neural Network] --> NN1[hidden_layers: 1-5]
+    subgraph NN_Model["Neural Network"]
+        NN[Model] --> NN1[hidden_layers: 1-5]
         NN --> NN2[neurons: 16-512]
         NN --> NN3[activation: relu, tanh, sigmoid]
         NN --> NN4[learning_rate: 0.0001-0.1]
         NN --> NN5[dropout: 0.0-0.5]
     end
+    
+    style LR_Model fill:#ff9999
+    style SVM_Model fill:#99ccff
+    style RF_Model fill:#99ff99
+    style XGB_Model fill:#ffcc99
+    style NN_Model fill:#ff99cc
+```d
     
     style LR fill:#ff9999
     style SVM fill:#99ccff
