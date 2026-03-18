@@ -1,0 +1,271 @@
+คุณเป็นผู้เชี่ยวชาญด้าน Machine Learning, Metaheuristic Optimization และการออกแบบระบบ AutoML
+
+ฉันเป็นนักศึกษามหาวิทยาลัย และกำลังทำโปรเจกต์กลุ่มหัวข้อ:
+
+"การออกแบบระบบ AutoML โดยใช้ Metaheuristic Optimization"
+
+วัตถุประสงค์ของระบบคือ
+พัฒนาระบบ Automated Machine Learning (AutoML) ที่สามารถค้นหา Machine Learning Pipeline ที่ดีที่สุดโดยอัตโนมัติ
+
+ระบบต้องสามารถ optimize องค์ประกอบต่อไปนี้
+
+1. Data Preprocessing
+2. Feature Selection / Feature Extraction
+3. Machine Learning Model Selection
+4. Hyperparameters ของโมเดล
+
+ระบบต้องรองรับทั้ง
+
+* ปัญหา Classification
+* ปัญหา Regression
+
+Metaheuristic Algorithms ที่ต้องนำมาใช้และเปรียบเทียบ ได้แก่
+
+1. Genetic Algorithm (GA)
+2. Genetic Programming (GP)
+3. Differential Evolution (DE)
+4. Particle Swarm Optimization (PSO)
+5. Ant Colony Optimization (ACO)
+6. Artificial Bee Colony (ABC)
+7. Grey Wolf (GWO)
+
+เป้าหมายของระบบคือ
+ให้ metaheuristic algorithms ค้นหา Machine Learning pipeline ที่ให้ performance ดีที่สุด
+
+---
+
+งานที่ต้องทำ
+
+---
+
+1. อธิบาย System Architecture ของ AutoML System ทั้งหมด
+
+ต้องประกอบด้วย
+
+* Dataset input
+* Data preprocessing
+* Pipeline encoding
+* Metaheuristic optimizer
+* Model training
+* Cross validation
+* Fitness evaluation
+* Optimizer update loop
+* Best pipeline output
+
+ให้สร้าง TEXT DIAGRAM (ASCII diagram) เพื่ออธิบาย architecture อย่างชัดเจน
+
+---
+
+2. ออกแบบ AutoML Search Space
+
+กำหนดองค์ประกอบดังนี้
+
+Preprocessing:
+
+* None
+* StandardScaler
+* MinMaxScaler
+
+Feature Selection / Extraction:
+
+* None
+* SelectKBest
+* PCA
+
+Model Selection:
+
+* Logistic Regression
+* Support Vector Machine (SVM)
+* Random Forest
+* XGBoost
+* Neural Network (MLP)
+
+กำหนด Hyperparameters ที่เหมาะสมของแต่ละโมเดล เช่น
+
+SVM:
+
+* C
+* gamma
+
+Random Forest:
+
+* n_estimators
+* max_depth
+
+XGBoost:
+
+* learning_rate
+* n_estimators
+* max_depth
+
+MLP:
+
+* hidden_layer_sizes
+* learning_rate
+
+ต้องกำหนดช่วงค่าของ hyperparameters อย่างสมเหตุสมผล
+
+---
+
+3. ออกแบบ Solution Encoding
+
+อธิบายว่า Machine Learning Pipeline ถูกแปลงเป็น vector representation อย่างไร
+
+ตัวอย่างเช่น
+
+[scaler, feature_method, model, param1, param2, ...]
+
+ให้ยกตัวอย่าง pipeline หลายแบบ พร้อมอธิบายความหมายของ vector แต่ละตัว
+
+---
+
+4. ออกแบบ Fitness Function
+
+อธิบายวิธีการประเมิน pipeline
+
+สำหรับ classification:
+
+* Accuracy
+* F1-score
+
+สำหรับ regression:
+
+* RMSE
+* MAE
+* R-Square
+
+อธิบายเหตุผลว่าทำไมต้องใช้ Cross Validation
+
+พร้อมนิยามสมการ fitness function
+
+---
+
+5. อธิบายวิธีการทำงานของ metaheuristic algorithms แต่ละตัว
+
+ต้องมีหัวข้อแยกสำหรับ
+
+1. Genetic Algorithm (GA)
+2. Genetic Programming (GP)
+3. Differential Evolution (DE)
+4. Particle Swarm Optimization (PSO)
+5. Ant Colony Optimization (ACO)
+6. Artificial Bee Colony (ABC)
+7. Grey Wolf (GWO)
+
+สำหรับแต่ละ algorithm ให้เขียน
+
+* แนวคิดของ algorithm
+* วิธีการค้นหา solution
+* รูปแบบ population representation
+* กฎการ update solution
+* Pseudocode
+* อธิบายว่า algorithm ใช้สร้าง ML pipelines ใหม่ได้อย่างไร
+
+---
+
+6. เขียน Pseudocode ของระบบ AutoML ทั้งหมด
+
+ตัวอย่างโครงสร้าง
+
+Initialize population
+Generate candidate pipelines
+Train machine learning models
+Evaluate performance
+Update optimizer
+Repeat until stopping condition
+
+pseudocode ต้องเป็นรูปแบบที่ใช้ในรายงานวิจัย
+
+---
+
+7. เขียนโครงสร้าง Python Implementation
+
+ใช้
+
+Python
+scikit-learn
+numpy
+
+สามารถใช้ library เสริมสำหรับ optimizer เช่น
+
+* mealpy
+* deap
+
+โค้ดต้องประกอบด้วย
+
+* pipeline decoding
+* model training
+* cross-validation evaluation
+* optimizer integration
+* experiment loop
+
+จัดโครงสร้างโค้ดให้เป็น modular
+
+---
+
+8. ออกแบบ Experimental Setup
+
+อธิบายการทดลองของระบบ
+
+กำหนด dataset ตัวอย่าง เช่น
+
+* Heart Disease Dataset (Kaggle: sintariosatya/heart-disease-dataset)
+* Housing Price Dataset (Kaggle: yasserh/housing-prices-dataset)
+* Student Performance Dataset (Kaggle: nabeelqureshitiii/student-performance-dataset)
+* Diabetes Dataset (SKlearn)
+
+กำหนด
+
+* train/test split
+* จำนวน iteration ของ optimizer
+* population size
+* evaluation metrics
+
+---
+
+9. ออกแบบตารางเปรียบเทียบผลลัพธ์
+
+ตัวอย่างตาราง
+
+## Optimizer | Best Accuracy | Iterations | Time
+
+GA        | 0.91          | 45         | 320s
+GP        | 0.90          | 50         | 340s
+DE        | 0.92          | 40         | 300s
+PSO       | 0.89          | 50         | 310s
+ACO       | 0.88          | 60         | 350s
+ABC       | 0.90          | 48         | 330s
+
+อธิบายวิธีวิเคราะห์ผลลัพธ์
+
+---
+
+10. เขียน Discussion และ Limitations
+
+อธิบาย
+
+* ข้อดีของ Metaheuristic AutoML
+* ข้อจำกัดของระบบ
+* computational cost
+* แนวทางการพัฒนาในอนาคต
+
+---
+
+ข้อกำหนดสำคัญ
+
+คำอธิบายต้อง
+
+* เป็นระบบ
+* ละเอียด
+* เหมาะสำหรับรายงานวิชาการ
+* เข้าใจง่ายสำหรับนักศึกษา
+* ถูกต้องทางเทคนิค
+
+ให้ใช้
+
+* diagram
+* ตาราง
+* pseudocode
+* step-by-step explanation
+
+ห้ามข้ามรายละเอียดสำคัญ
