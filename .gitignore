@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+venv/
+env/
+.venv/
+
+# Results & data (generated)
+results/
+data/raw/
+*.log
+logs/
+*.out
+*.err
+
+# Kaggle credentials (NEVER commit)
+data/kaggle/kaggle.json
+
+# Singularity image (large binary)
+*.sif
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

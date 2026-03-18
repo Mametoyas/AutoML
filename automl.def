@@ -1,0 +1,121 @@
+Bootstrap: docker
+From: nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
+
+%labels
+    Author      AutoML-Metaheuristic
+    Version     1.0.0
+    Description AutoML System with GA/GP/DE/PSO/ACO/ABC/GWO + bonus WOA/HHO/CS
+    CUDA        12.1
+    Python      3.10
+
+%environment
+    export PYTHONIOENCODING=utf-8
+    export PYTHONUNBUFFERED=1
+    export CUDA_VISIBLE_DEVICES=0
+    export PATH=/usr/local/bin:$PATH
+    export LC_ALL=C.UTF-8
+    export LANG=C.UTF-8
+
+%post
+    # ── System packages ────────────────────────────────────────
+    apt-get update && apt-get install -y --no-install-recommends \
+        python3.10 \
+        python3.10-dev \
+        python3-pip \
+        python3.10-distutils \
+        gcc \
+        g++ \
+        && rm -rf /var/lib/apt/lists/*
+
+    # ── Set python3.10 as default ──────────────────────────────
+    update-alternatives --install /usr/bin/python  python  /usr/bin/python3.10 1
+    update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
+    update-alternatives --install /usr/bin/pip     pip     /usr/bin/pip3       1
+
+    # ── Upgrade pip ────────────────────────────────────────────
+    pip install --no-cache-dir --upgrade pip
+
+    # ── PyTorch CUDA 12.1 ──────────────────────────────────────
+    pip install --no-cache-dir \
+        torch==2.3.0+cu121 \
+        --index-url https://download.pytorch.org/whl/cu121
+
+    # ── Project requirements ───────────────────────────────────
+    pip install --no-cache-dir \
+        numpy==1.26.4 \
+        pandas==2.2.2 \
+        scikit-learn==1.4.2 \
+        xgboost==2.0.3 \
+        matplotlib==3.9.0 \
+        seaborn==0.13.2 \
+        tqdm==4.66.4 \
+        scipy==1.13.0 \
+        joblib==1.4.2 \
+        kaggle==1.6.14 \
+        opendatasets==0.1.22
+
+    # ── Create directories ─────────────────────────────────────
+    mkdir -p /app/data/raw /app/results /app/logs
+
+%files
+    # Copy entire project into /app
+    . /app
+
+%runscript
+    # Default entrypoint: python main.py <args>
+    cd /app
+    exec python main.py "$@"
+
+%test
+    # Smoke test — verify all imports work
+    echo "=== Singularity smoke test ==="
+    python -c "
+import sys
+print(f'Python : {sys.version}')
+
+import numpy; print(f'numpy  : {numpy.__version__}')
+import pandas; print(f'pandas : {pandas.__version__}')
+import sklearn; print(f'sklearn: {sklearn.__version__}')
+import xgboost; print(f'xgboost: {xgboost.__version__}')
+import torch; print(f'torch  : {torch.__version__}')
+print(f'CUDA   : {torch.cuda.is_available()}')
+
+# AutoML core imports
+sys.path.insert(0, '/app')
+from core.search_space import get_bounds
+from core.fitness import FitnessEvaluator
+from optimizers import OPTIMIZER_REGISTRY, REQUIRED_OPTIMIZERS
+print(f'Optimizers: {list(OPTIMIZER_REGISTRY.keys())}')
+print(f'Required  : {REQUIRED_OPTIMIZERS}')
+print('=== All imports OK ===')
+"
+
+%help
+    AutoML Metaheuristic Optimization System
+    =========================================
+    Optimizers : GA, GP, DE, PSO, ACO, ABC, GWO (required)
+                 WOA, HHO, CS (bonus, use --all)
+    Datasets   : heart, student, housing, diabetes
+
+    Usage:
+      # Quick test (synthetic data)
+      singularity run --nv automl.sif --use-synthetic --quick
+
+      # Full run (7 required optimizers)
+      singularity run --nv automl.sif --use-synthetic --pop-size 30 --max-iter 100 --n-runs 5
+
+      # All 10 optimizers
+      singularity run --nv automl.sif --use-synthetic --all
+
+      # With Kaggle datasets (mount kaggle.json)
+      singularity run --nv \
+          --bind ./results:/app/results \
+          --bind ./data/raw:/app/data/raw \
+          --bind ./data/kaggle/kaggle.json:/root/.kaggle/kaggle.json:ro \
+          automl.sif
+
+      # Exec shell inside container
+      singularity shell --nv automl.sif
+
+      # Run smoke test
+      singularity test automl.sif

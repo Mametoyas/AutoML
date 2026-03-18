@@ -1,0 +1,62 @@
+version: "3.8"
+
+x-gpu-env: &gpu-env
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
+  environment:
+    - PYTHONIOENCODING=utf-8
+    - PYTHONUNBUFFERED=1
+    - CUDA_VISIBLE_DEVICES=0
+
+services:
+  automl:
+    build: .
+    image: automl-metaheuristic:latest
+    container_name: automl_run
+    <<: *gpu-env
+    volumes:
+      - ./results:/app/results
+      - ./data/raw:/app/data/raw
+      - ./data/kaggle/kaggle.json:/root/.kaggle/kaggle.json:ro
+    command: ["--use-synthetic", "--quick"]
+
+  # Quick test — synthetic data, no Kaggle, no plots
+  automl-quick:
+    build: .
+    image: automl-metaheuristic:latest
+    container_name: automl_quick
+    <<: *gpu-env
+    volumes:
+      - ./results:/app/results
+      - ./data/raw:/app/data/raw
+    command: ["--use-synthetic", "--quick", "--no-plots"]
+
+  # Full run with Kaggle datasets
+  automl-full:
+    build: .
+    image: automl-metaheuristic:latest
+    container_name: automl_full
+    <<: *gpu-env
+    volumes:
+      - ./results:/app/results
+      - ./data/raw:/app/data/raw
+      - ./data/kaggle/kaggle.json:/root/.kaggle/kaggle.json:ro
+    command: ["--quick"]
+
+  # Download Kaggle datasets only (no GPU needed)
+  automl-download:
+    build: .
+    image: automl-metaheuristic:latest
+    container_name: automl_download
+    environment:
+      - PYTHONIOENCODING=utf-8
+    volumes:
+      - ./data/raw:/app/data/raw
+      - ./data/kaggle/kaggle.json:/root/.kaggle/kaggle.json:ro
+    entrypoint: ["python", "setup_kaggle.py"]
+    command: ["--download"]
