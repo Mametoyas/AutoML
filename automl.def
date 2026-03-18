@@ -67,10 +67,12 @@ From: nvidia/cuda:12.1.1-cudnn8-runtime-ubuntu22.04
     exec python main.py "$@"
 
 %test
-    # Smoke test — verify all imports work
     echo "=== Singularity smoke test ==="
+    export PYTHONPATH=/app:$PYTHONPATH
+    cd /app
     python -c "
 import sys
+sys.path.insert(0, '/app')
 print(f'Python : {sys.version}')
 
 import numpy; print(f'numpy  : {numpy.__version__}')
@@ -78,7 +80,7 @@ import pandas; print(f'pandas : {pandas.__version__}')
 import sklearn; print(f'sklearn: {sklearn.__version__}')
 import xgboost; print(f'xgboost: {xgboost.__version__}')
 import torch; print(f'torch  : {torch.__version__}')
-print(f'CUDA   : {torch.cuda.is_available()}')
+print(f'CUDA   : {torch.cuda.is_available()} (False during build is normal)')
 
 # AutoML core imports
 sys.path.insert(0, '/app')
